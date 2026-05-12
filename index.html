@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zeejay Clinic Referral Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #e9f2f7;
+    margin: 0;
+}
+
+.header {
+    background: #005eb8;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 420px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #005eb8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #004a9f;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.footer {
+    margin-top: 40px;
+    font-size: 12px;
+    color: #666;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    Zeejay Clinic Referral Tool
+</div>
+
+<div class="container">
+
+    <p>Enter postcode to find correct clinic & team</p>
+
+    <input type="text" id="postcode" placeholder="e.g. SE1 2AB">
+    <button onclick="findClinic()">Search</button>
+
+    <div id="result"></div>
+
+</div>
+
+<div class="footer">
+    Internal Use Only
+</div>
+
+<script>
+
+const rules = [
+["SE1 2","Bermondsey or Artesian","Bluebell"],
+["SE1 3","Bermondsey or Artesian","Bluebell"],
+["SE1 4","Bermondsey or Artesian","Bluebell"],
+["SE1 5","Bermondsey or Artesian","Bluebell"],
+["SE8","Bermondsey or Artesian","Bluebell"],
+["SE14","Bermondsey or Artesian","Bluebell"],
+["SE16","Bermondsey or Artesian","Bluebell"],
+
+["SE1 0","Harold Moody","Tulip"],
+["SE1 1","Harold Moody","Tulip"],
+["SE1 6","Harold Moody","Tulip"],
+["SE1 9","Harold Moody","Tulip"],
+["SE17","Harold Moody","Tulip"],
+["SE5 0","Harold Moody","Tulip"],
+
+["SE1 7","Mawbey","Tulip"],
+["SE1 8","Mawbey","Tulip"],
+["SE11","Mawbey","Tulip"],
+["SW8 1","Mawbey","Tulip"],
+["SW8 2","Mawbey","Tulip"],
+["SW8 7","Mawbey","Tulip"],
+["SW9 6","Mawbey","Tulip"],
+
+["SW8 3","Clapham Manor","Rose"],
+["SW8 4","Clapham Manor","Rose"],
+["SW9 0","Clapham Manor","Rose"],
+["SW9 8","Clapham Manor","Rose"],
+["SW9 9","Clapham Manor","Rose"],
+["SW12 0","Clapham Manor","Rose"],
+["SW12 9","Clapham Manor","Rose"],
+
+["SW2","Gracefield Gardens","Rose"],
+["SW16","Gracefield Gardens","Rose"]
+];
+
+function findClinic() {
+    let input = document.getElementById("postcode").value.toUpperCase().trim();
+
+    if (!input.includes(" ")) {
+        document.getElementById("result").innerHTML = "⚠️ Enter full postcode (e.g. SE1 2AB)";
+        return;
+    }
+
+    let prefix = input.split(" ")[0] + " " + input.split(" ")[1].charAt(0);
+
+    for (let i = 0; i < rules.length; i++) {
+        if (prefix.startsWith(rules[i][0]) || input.startsWith(rules[i][0])) {
+            document.getElementById("result").innerHTML =
+                "🏥 Clinic: " + rules[i][1] + "<br>👥 Team: " + rules[i][2];
+            return;
+        }
+    }
+
+    if (input.startsWith("SE")) {
+        document.getElementById("result").innerHTML = "🏥 Clinic: River Team";
+    } else {
+        document.getElementById("result").innerHTML = "❌ Referral to be rejected";
+    }
+}
+
+</script>
+
+</body>
+</html>
